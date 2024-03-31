@@ -3,9 +3,7 @@ from typing import Optional
 
 import pygame
 
-from src.constants import PLAYER_INITIAL_POSITION, PLAYER_SIZE, INTENSE_TEMPERATURE_CELL_SIZE, \
-    HORIZONTAL_GAP_BETWEEN_CELLS, MINIMAL_VERTICAL_GAP_BETWEEN_CELLS, INTENSE_CELL_HORIZONTAL_START
-from src.entities.cell import Cell
+from src.constants import PLAYER_INITIAL_POSITION, PLAYER_SIZE, INTENSE_TEMPERATURE_CELL_SIZE
 from src.entities.intense_temperature_cell import IntenseTemperatureCell
 from src.entities.player import Player
 from src.scenes.scene import Scene
@@ -40,7 +38,9 @@ class Game(Scene):
 
     def update(self):
         super().update()
-        self.player.update()
+        self.player.update(self.screen)
+        for cell in self.intense_temperature_cells:
+            cell.update(self.screen)
 
     def draw(self):
         super().draw()

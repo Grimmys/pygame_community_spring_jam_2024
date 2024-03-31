@@ -12,11 +12,11 @@ class Player(Cell):
         self.in_movement = False
         self.move_left = False
 
-    def update(self):
+    def update(self, screen: pygame.Surface):
         self.velocity = pygame.Vector2(0, 0)
         if self.in_movement:
             if self.move_left:
                 self.velocity.x -= Cell.DEFAULT_CELL_VELOCITY
             else:
                 self.velocity.x += Cell.DEFAULT_CELL_VELOCITY
-        self.rect.move_ip(self.velocity)
+        super().update(screen)

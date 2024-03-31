@@ -27,3 +27,6 @@ class Cell:
         screen -- the screen on which the cell should be drawn
         """
         screen.blit(self.sprite, self.rect)
+
+    def update(self, screen: pygame.Surface) -> None:
+        self.rect.move_ip(self.velocity)
