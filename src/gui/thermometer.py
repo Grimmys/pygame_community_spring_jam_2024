@@ -14,7 +14,8 @@ class Thermometer:
 
     def display(self, screen: pygame.Surface, temperature: int) -> None:
         screen.blit(self.base_sprite, self.position)
+        fill_proportion = temperature / Thermometer.TEMPERATURE_RANGE
         fill_rect = self.fill_sprite.get_rect()
-        fill_rect.y = fill_rect.height * (1 - (temperature / Thermometer.TEMPERATURE_RANGE))
+        fill_rect.y = fill_rect.height * (1 - fill_proportion)
         screen.blit(self.fill_sprite, self.position + pygame.Vector2(0, fill_rect.y), fill_rect)
 

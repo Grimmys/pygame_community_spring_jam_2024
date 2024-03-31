@@ -4,7 +4,7 @@ import pygame
 
 from src.constants import PLAYER_INITIAL_POSITION, PLAYER_SIZE, INTENSE_TEMPERATURE_CELL_SIZE, \
     GENERATION_PROBABILITY, MINIMAL_TIME_BEFORE_CELL_GENERATION, THERMOMETER_POSITION, \
-    MIN_TEMPERATURE, MAX_TEMPERATURE
+    MAX_TEMPERATURE
 from src.entities.intense_temperature_cell import IntenseTemperatureCell, IntenseTemperatureNature
 from src.entities.player import Player
 from src.gui.thermometer import Thermometer
@@ -43,6 +43,10 @@ class Game(Scene):
     def update(self):
         super().update()
         self.player.update(self.screen)
+        self._update_intense_temperature_cells()
+        self._check_cell_generation()
+
+    def _update_intense_temperature_cells(self):
         alive_intense_temperature_cells = []
         for cell in self.intense_temperature_cells:
             if cell.rect.colliderect(self.player):
@@ -52,7 +56,6 @@ class Game(Scene):
             if cell.alive:
                 alive_intense_temperature_cells.append(cell)
         self.intense_temperature_cells = alive_intense_temperature_cells
-        self._check_cell_generation()
 
     def _check_cell_generation(self):
         if self.timer_until_next_generation <= 0:
