@@ -3,7 +3,8 @@ from typing import Optional
 
 import pygame
 
-from src.constants import PLAYER_INITIAL_POSITION, PLAYER_SIZE, INTENSE_TEMPERATURE_CELL_SIZE
+from src.constants import PLAYER_INITIAL_POSITION, PLAYER_SIZE, INTENSE_TEMPERATURE_CELL_SIZE, \
+    GENERATION_PROBABILITY, MINIMAL_TIME_BEFORE_CELL_GENERATION
 from src.entities.intense_temperature_cell import IntenseTemperatureCell
 from src.entities.player import Player
 from src.scenes.scene import Scene
@@ -17,24 +18,23 @@ class Game(Scene):
         self.player: Player = Player(pygame.Vector2(PLAYER_INITIAL_POSITION), PLAYER_SIZE,
                                      "assets/player_cell.png")
         self.intense_temperature_cells: list[IntenseTemperatureCell] = []
-        for _ in range(3):
-            cell: Optional[IntenseTemperatureCell] = self._generate_intense_temperature_cell()
-            if cell:
-                self.intense_temperature_cells.append(cell)
         self.double_movement_key_pressed: bool = False
+        self.timer_until_next_generation = 0
 
-    def _generate_intense_temperature_cell(self) -> Optional[IntenseTemperatureCell]:
+    def _generate_intense_temperature_cell(self) -> bool:
         free_columns = list(range(Game.INTENSE_CELL_COLUMNS_NUMBER))
         for cell in self.intense_temperature_cells:
             if cell.column_index in free_columns and cell.is_position_nearby_spawn():
                 free_columns.remove(cell.column_index)
 
         if len(free_columns) == 0:
-            return None
+            return False
 
         column_index = random.choice(free_columns)
-        return IntenseTemperatureCell(INTENSE_TEMPERATURE_CELL_SIZE, "assets/cold_cell.png",
-                                      column_index)
+        self.intense_temperature_cells.append(
+            IntenseTemperatureCell(INTENSE_TEMPERATURE_CELL_SIZE, "assets/cold_cell.png",
+                                   column_index))
+        return True
 
     def update(self):
         super().update()
@@ -45,6 +45,12 @@ class Game(Scene):
             if cell.alive:
                 alive_intense_temperature_cells.append(cell)
         self.intense_temperature_cells = alive_intense_temperature_cells
+        if self.timer_until_next_generation <= 0:
+            should_generate_cell = random.random() < GENERATION_PROBABILITY
+            if should_generate_cell and self._generate_intense_temperature_cell():
+                self.timer_until_next_generation = MINIMAL_TIME_BEFORE_CELL_GENERATION
+        else:
+            self.timer_until_next_generation -= 1
 
     def draw(self):
         super().draw()
