@@ -6,6 +6,7 @@ from src.entities.cell import Cell
 
 
 class IntenseTemperatureCell(Cell):
+    DEFAULT_INTENSE_TEMPERATURE_VELOCITY = Cell.DEFAULT_CELL_VELOCITY // 2
 
     def __init__(
         self, size: tuple[int, int], sprite: str | pygame.Surface, column_index: int
@@ -14,6 +15,7 @@ class IntenseTemperatureCell(Cell):
             INTENSE_CELL_HORIZONTAL_START + (size[0] + HORIZONTAL_GAP_BETWEEN_CELLS) * column_index,
             0)
         super().__init__(position, size, sprite)
+        self.velocity.y = IntenseTemperatureCell.DEFAULT_INTENSE_TEMPERATURE_VELOCITY
         self.column_index = column_index
 
     def is_position_nearby_spawn(self):
