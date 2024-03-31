@@ -3,9 +3,10 @@ import random
 import pygame
 
 from src.constants import PLAYER_INITIAL_POSITION, PLAYER_SIZE, INTENSE_TEMPERATURE_CELL_SIZE, \
-    GENERATION_PROBABILITY, MINIMAL_TIME_BEFORE_CELL_GENERATION
+    GENERATION_PROBABILITY, MINIMAL_TIME_BEFORE_CELL_GENERATION, THERMOMETER_POSITION
 from src.entities.intense_temperature_cell import IntenseTemperatureCell, IntenseTemperatureNature
 from src.entities.player import Player
+from src.gui.thermometer import Thermometer
 from src.scenes.scene import Scene
 
 
@@ -14,9 +15,10 @@ class Game(Scene):
 
     def __init__(self, screen):
         super().__init__(screen)
-        self.player: Player = Player(pygame.Vector2(PLAYER_INITIAL_POSITION), PLAYER_SIZE,
+        self.player: Player = Player(PLAYER_INITIAL_POSITION, PLAYER_SIZE,
                                      "assets/player_cell.png")
         self.intense_temperature_cells: list[IntenseTemperatureCell] = []
+        self.thermometer = Thermometer(THERMOMETER_POSITION)
         self.double_movement_key_pressed: bool = False
         self.timer_until_next_generation = 0
 
@@ -58,6 +60,7 @@ class Game(Scene):
         self.player.display(self.screen)
         for cell in self.intense_temperature_cells:
             cell.display(self.screen)
+        self.thermometer.display(self.screen)
 
     def process_event(self, event: pygame.event.Event):
         super().process_event(event)

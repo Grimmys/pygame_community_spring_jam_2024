@@ -6,4 +6,4 @@ from typing import Union
 
 import pygame
 
-Position = Union[pygame.Vector2, tuple[int, int]]
+Position = pygame.Vector2
