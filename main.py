@@ -29,9 +29,14 @@ def main_loop(
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 keep_playing = False
             active_scene.process_event(event)
+        screen.fill(pygame.Color("BLACK"))
         active_scene.draw()
         show_fps(screen, clock, fonts.fonts["FPS_FONT"])
         active_scene.update()
+        if active_scene.next_scene is not None:
+            active_scene.timer_until_next_scene -= 1
+            if active_scene.timer_until_next_scene <= 0:
+                active_scene = active_scene.next_scene
         pygame.display.update()
         clock.tick(FRAME_RATE)
 

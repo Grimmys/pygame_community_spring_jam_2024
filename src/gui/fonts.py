@@ -6,7 +6,8 @@ after pygame initialization.
 import pygame
 
 _fonts_description: dict[str, dict[str, str | int]] = {
-    "FPS_FONT": {"default": True},
+    "FPS_FONT": {"default": True, "size": 20},
+    "GAME_OVER_FONT": {"default": True, "size": 64}
 }
 
 fonts: dict[str, pygame.font.Font] = {}
@@ -21,6 +22,6 @@ def init_fonts() -> None:
     for font_name, font in _fonts_description.items():
         if "default" in font:
             # Use pygame's default font
-            fonts[font_name] = pygame.font.SysFont("arial", 20, True)
+            fonts[font_name] = pygame.font.SysFont("arial", font["size"], True)
         else:
             fonts[font_name] = pygame.font.Font(font["name"], font["size"])
