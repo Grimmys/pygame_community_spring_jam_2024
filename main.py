@@ -11,21 +11,27 @@ import pygame
 
 from src.constants import GAME_TITLE, MAIN_WIN_WIDTH, MAIN_WIN_HEIGHT, FRAME_RATE
 from src.gui import fonts
+from src.scenes.game import Game
 from src.tools import show_fps
 
 
 def main_loop(
     screen: pygame.Surface, clock: pygame.time.Clock
 ) -> None:
+    active_scene = Game(screen)
+    active_scene.run()
+
     keep_playing = True
     while keep_playing:
-        screen.fill(pygame.Color("BLACK"))
-        show_fps(screen, clock, fonts.fonts["FPS_FONT"])
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 keep_playing = False
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 keep_playing = False
+            active_scene.process_event(event)
+        active_scene.draw()
+        show_fps(screen, clock, fonts.fonts["FPS_FONT"])
+        active_scene.update()
         pygame.display.update()
         clock.tick(FRAME_RATE)
 
