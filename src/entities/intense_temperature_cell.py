@@ -1,3 +1,5 @@
+from enum import Enum
+
 import pygame
 
 from src.constants import MINIMAL_VERTICAL_GAP_BETWEEN_CELLS, INTENSE_CELL_HORIZONTAL_START, \
@@ -5,15 +7,28 @@ from src.constants import MINIMAL_VERTICAL_GAP_BETWEEN_CELLS, INTENSE_CELL_HORIZ
 from src.entities.cell import Cell
 
 
+class IntenseTemperatureNature(Enum):
+    COLD = 1
+    WARM = 2
+
+
 class IntenseTemperatureCell(Cell):
     DEFAULT_INTENSE_TEMPERATURE_VELOCITY = Cell.DEFAULT_CELL_VELOCITY // 2
 
     def __init__(
-        self, size: tuple[int, int], sprite: str | pygame.Surface, column_index: int
+        self, size: tuple[int, int], nature: IntenseTemperatureNature, column_index: int
     ) -> None:
         position = pygame.Vector2(
             INTENSE_CELL_HORIZONTAL_START + (size[0] + HORIZONTAL_GAP_BETWEEN_CELLS) * column_index,
             0)
+        match nature:
+            case IntenseTemperatureNature.COLD:
+                sprite = "assets/cold_cell.png"
+            case IntenseTemperatureNature.WARM:
+                sprite = "assets/warm_cell.png"
+            case _:
+                raise ValueError(f"{nature} is not a valid intense temperature cell nature")
+
         super().__init__(position, size, sprite)
         self.velocity.y = IntenseTemperatureCell.DEFAULT_INTENSE_TEMPERATURE_VELOCITY
         self.column_index: int = column_index

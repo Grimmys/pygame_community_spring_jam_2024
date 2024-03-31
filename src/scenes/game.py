@@ -1,11 +1,10 @@
 import random
-from typing import Optional
 
 import pygame
 
 from src.constants import PLAYER_INITIAL_POSITION, PLAYER_SIZE, INTENSE_TEMPERATURE_CELL_SIZE, \
     GENERATION_PROBABILITY, MINIMAL_TIME_BEFORE_CELL_GENERATION
-from src.entities.intense_temperature_cell import IntenseTemperatureCell
+from src.entities.intense_temperature_cell import IntenseTemperatureCell, IntenseTemperatureNature
 from src.entities.player import Player
 from src.scenes.scene import Scene
 
@@ -31,8 +30,9 @@ class Game(Scene):
             return False
 
         column_index = random.choice(free_columns)
+        nature = random.choice(list(IntenseTemperatureNature))
         self.intense_temperature_cells.append(
-            IntenseTemperatureCell(INTENSE_TEMPERATURE_CELL_SIZE, "assets/cold_cell.png",
+            IntenseTemperatureCell(INTENSE_TEMPERATURE_CELL_SIZE, nature,
                                    column_index))
         return True
 
