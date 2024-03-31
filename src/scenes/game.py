@@ -39,8 +39,12 @@ class Game(Scene):
     def update(self):
         super().update()
         self.player.update(self.screen)
+        alive_intense_temperature_cells = []
         for cell in self.intense_temperature_cells:
             cell.update(self.screen)
+            if cell.alive:
+                alive_intense_temperature_cells.append(cell)
+        self.intense_temperature_cells = alive_intense_temperature_cells
 
     def draw(self):
         super().draw()

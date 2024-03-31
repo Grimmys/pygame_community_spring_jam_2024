@@ -16,7 +16,13 @@ class IntenseTemperatureCell(Cell):
             0)
         super().__init__(position, size, sprite)
         self.velocity.y = IntenseTemperatureCell.DEFAULT_INTENSE_TEMPERATURE_VELOCITY
-        self.column_index = column_index
+        self.column_index: int = column_index
+        self.alive: bool = True
+
+    def update(self, screen: pygame.Surface) -> None:
+        super().update(screen)
+        if self.rect.y >= screen.get_height():
+            self.alive = False
 
     def is_position_nearby_spawn(self):
         return self.rect.y < self.rect.size[1] + MINIMAL_VERTICAL_GAP_BETWEEN_CELLS
