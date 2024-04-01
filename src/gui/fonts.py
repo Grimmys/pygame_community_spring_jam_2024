@@ -7,7 +7,8 @@ import pygame
 
 _fonts_description: dict[str, dict[str, str | int]] = {
     "FPS_FONT": {"default": True, "size": 20},
-    "GAME_OVER_FONT": {"default": True, "size": 64}
+    "GAME_OVER_FONT": {"default": True, "size": 64},
+    "SCORE_FONT": {"default": True, "size": 32}
 }
 
 fonts: dict[str, pygame.font.Font] = {}
