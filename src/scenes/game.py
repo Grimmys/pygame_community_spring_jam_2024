@@ -5,7 +5,9 @@ import pygame
 from src.constants import PLAYER_INITIAL_POSITION, PLAYER_SIZE, INTENSE_TEMPERATURE_CELL_SIZE, \
     GENERATION_PROBABILITY, MINIMAL_TIME_BEFORE_CELL_GENERATION, THERMOMETER_POSITION, \
     MAX_TEMPERATURE, MIN_TEMPERATURE, DELAY_BEFORE_GAME_OVER, SCORE_TEXT, LIGHT_YELLOW, \
-    DELAY_BEFORE_SCORE_INCREASE, DEFAULT_SCORE_INCREASE_VALUE, PERFECT_TEMPERATURE
+    DELAY_BEFORE_SCORE_INCREASE, DEFAULT_SCORE_INCREASE_VALUE, PERFECT_TEMPERATURE, \
+    INTENSE_CELL_COLUMNS_NUMBER, GAME_AREA_HORIZONTAL_START, \
+    GAME_AREA_HORIZONTAL_END
 from src.entities.intense_temperature_cell import IntenseTemperatureCell, IntenseTemperatureNature
 from src.entities.player import Player
 from src.gui import fonts
@@ -15,8 +17,6 @@ from src.scenes.scene import Scene
 
 
 class Game(Scene):
-    INTENSE_CELL_COLUMNS_NUMBER = 6
-
     def __init__(self, screen):
         super().__init__(screen)
         self.player: Player = Player(PLAYER_INITIAL_POSITION, PLAYER_SIZE,
@@ -32,7 +32,7 @@ class Game(Scene):
         self.timer_until_next_scene = DELAY_BEFORE_GAME_OVER
 
     def _generate_intense_temperature_cell(self) -> bool:
-        free_columns = list(range(Game.INTENSE_CELL_COLUMNS_NUMBER))
+        free_columns = list(range(INTENSE_CELL_COLUMNS_NUMBER))
         for cell in self.intense_temperature_cells:
             if cell.column_index in free_columns and cell.is_position_nearby_spawn():
                 free_columns.remove(cell.column_index)
@@ -51,6 +51,10 @@ class Game(Scene):
         super().update()
         if not self.game_over:
             self.player.update(self.screen)
+            if self.player.rect.x < GAME_AREA_HORIZONTAL_START:
+                self.player.rect.x = GAME_AREA_HORIZONTAL_START
+            elif self.player.rect.x > GAME_AREA_HORIZONTAL_END - self.player.rect.width:
+                self.player.rect.x = GAME_AREA_HORIZONTAL_END - self.player.rect.width
             self._update_intense_temperature_cells()
             self._check_cell_generation()
             self._check_game_over()
@@ -94,7 +98,8 @@ class Game(Scene):
         self.thermometer.display(self.screen, self.temperature)
         score_rendering = fonts.fonts["SCORE_FONT"].render(f"{SCORE_TEXT}: {self.score}",
                                                            True, LIGHT_YELLOW)
-        self.screen.blit(score_rendering, (self.screen.get_width() - score_rendering.get_width(), 0))
+        self.screen.blit(score_rendering,
+                         (self.screen.get_width() - score_rendering.get_width(), 0))
 
     def process_event(self, event: pygame.event.Event):
         super().process_event(event)
