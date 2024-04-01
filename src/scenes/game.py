@@ -7,13 +7,25 @@ from src.constants import PLAYER_INITIAL_POSITION, PLAYER_SIZE, INTENSE_TEMPERAT
     MAX_TEMPERATURE, MIN_TEMPERATURE, DELAY_BEFORE_GAME_OVER, SCORE_TEXT, LIGHT_YELLOW, \
     DELAY_BEFORE_SCORE_INCREASE, DEFAULT_SCORE_INCREASE_VALUE, PERFECT_TEMPERATURE, \
     INTENSE_CELL_COLUMNS_NUMBER, GAME_AREA_HORIZONTAL_START, \
-    GAME_AREA_HORIZONTAL_END
+    GAME_AREA_HORIZONTAL_END, DELAY_BEFORE_DIFFICULTY_INCREASE
 from src.entities.intense_temperature_cell import IntenseTemperatureCell, IntenseTemperatureNature
 from src.entities.player import Player
 from src.gui import fonts
 from src.gui.thermometer import Thermometer
 from src.scenes.game_over import GameOver
 from src.scenes.scene import Scene
+
+DIFFICULTY_LEVELS = [
+    {"generated_cells_range": (1, 2)},
+    {"generated_cells_range": (1, 2, 3)},
+    {"generated_cells_range": (1, 2, 3, 4)},
+    {"generated_cells_range": (2, 3, 4)},
+    {"generated_cells_range": (3, 4)},
+    {"generated_cells_range": (3, 4, 5)},
+    {"generated_cells_range": (4, 5)},
+    {"generated_cells_range": (4, 5, 6)},
+    {"generated_cells_range": (5, 6)},
+]
 
 
 class Game(Scene):
@@ -28,24 +40,31 @@ class Game(Scene):
         self.timer_until_score_increase: int = DELAY_BEFORE_SCORE_INCREASE
         self.double_movement_key_pressed: bool = False
         self.timer_until_next_cell_generation: int = 0
+        self.difficulty_level = 0
+        self.timer_until_difficulty_increase: int = DELAY_BEFORE_DIFFICULTY_INCREASE
+        self.number_generated_cells_range = DIFFICULTY_LEVELS[self.difficulty_level]["generated_cells_range"]
         self.game_over = False
         self.timer_until_next_scene = DELAY_BEFORE_GAME_OVER
 
-    def _generate_intense_temperature_cell(self) -> bool:
+    def _generate_intense_temperature_cells(self) -> bool:
+        cell_quantity_to_generate = random.choice(self.number_generated_cells_range)
         free_columns = list(range(INTENSE_CELL_COLUMNS_NUMBER))
+        generated_at_least_one_cell = False
         for cell in self.intense_temperature_cells:
             if cell.column_index in free_columns and cell.is_position_nearby_spawn():
                 free_columns.remove(cell.column_index)
+        for _ in range(cell_quantity_to_generate):
+            if len(free_columns) == 0:
+                break
 
-        if len(free_columns) == 0:
-            return False
-
-        column_index = random.choice(free_columns)
-        nature = random.choice(list(IntenseTemperatureNature))
-        self.intense_temperature_cells.append(
-            IntenseTemperatureCell(INTENSE_TEMPERATURE_CELL_SIZE, nature,
-                                   column_index))
-        return True
+            column_index = random.choice(free_columns)
+            nature = random.choice(list(IntenseTemperatureNature))
+            self.intense_temperature_cells.append(
+                IntenseTemperatureCell(INTENSE_TEMPERATURE_CELL_SIZE, nature,
+                                       column_index))
+            free_columns.remove(column_index)
+            generated_at_least_one_cell = True
+        return generated_at_least_one_cell
 
     def update(self):
         super().update()
@@ -55,6 +74,7 @@ class Game(Scene):
                 self.player.rect.x = GAME_AREA_HORIZONTAL_START
             elif self.player.rect.x > GAME_AREA_HORIZONTAL_END - self.player.rect.width:
                 self.player.rect.x = GAME_AREA_HORIZONTAL_END - self.player.rect.width
+            self._update_difficulty()
             self._update_intense_temperature_cells()
             self._check_cell_generation()
             self._check_game_over()
@@ -74,7 +94,7 @@ class Game(Scene):
     def _check_cell_generation(self):
         if self.timer_until_next_cell_generation <= 0:
             should_generate_cell = random.random() < GENERATION_PROBABILITY
-            if should_generate_cell and self._generate_intense_temperature_cell():
+            if should_generate_cell and self._generate_intense_temperature_cells():
                 self.timer_until_next_cell_generation = MINIMAL_TIME_BEFORE_CELL_GENERATION
         else:
             self.timer_until_next_cell_generation -= 1
@@ -121,3 +141,11 @@ class Game(Scene):
         self.game_over = self.temperature not in range(MIN_TEMPERATURE, MAX_TEMPERATURE)
         if self.game_over:
             self.next_scene = GameOver(self.screen)
+
+    def _update_difficulty(self):
+        if self.timer_until_difficulty_increase <= 0 and self.difficulty_level < len(DIFFICULTY_LEVELS) - 1:
+            self.difficulty_level += 1
+            self.number_generated_cells_range = DIFFICULTY_LEVELS[self.difficulty_level]["generated_cells_range"]
+            self.timer_until_difficulty_increase = DELAY_BEFORE_DIFFICULTY_INCREASE
+        else:
+            self.timer_until_difficulty_increase -= 1
