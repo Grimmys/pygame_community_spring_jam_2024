@@ -85,7 +85,7 @@ class Game(Scene):
         for cell in self.intense_temperature_cells:
             if cell.rect.colliderect(self.player):
                 cell.alive = False
-                self.temperature += cell.temperature_power
+                self.temperature += cell.get_temperature_power(self.temperature)
             cell.update(self.screen)
             if cell.alive:
                 alive_intense_temperature_cells.append(cell)

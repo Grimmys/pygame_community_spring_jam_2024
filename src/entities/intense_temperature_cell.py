@@ -3,13 +3,14 @@ from enum import Enum
 import pygame
 
 from src.constants import MINIMAL_VERTICAL_GAP_BETWEEN_CELLS, INTENSE_CELL_HORIZONTAL_START, \
-    HORIZONTAL_GAP_BETWEEN_CELLS
+    HORIZONTAL_GAP_BETWEEN_CELLS, PERFECT_TEMPERATURE
 from src.entities.cell import Cell
 
 
 class IntenseTemperatureNature(Enum):
     COLD = 1
     WARM = 2
+    AMPLIFIER = 3
 
 
 class IntenseTemperatureCell(Cell):
@@ -27,6 +28,8 @@ class IntenseTemperatureCell(Cell):
                 sprite = "assets/warm_cell.png"
             case IntenseTemperatureNature.COLD:
                 sprite = "assets/cold_cell.png"
+            case IntenseTemperatureNature.AMPLIFIER:
+                sprite = "assets/amplifier_cell.png"
             case _:
                 raise ValueError(f"{nature} is not a valid intense temperature cell nature")
 
@@ -34,7 +37,6 @@ class IntenseTemperatureCell(Cell):
         self.velocity.y = IntenseTemperatureCell.DEFAULT_INTENSE_TEMPERATURE_VELOCITY
         self.column_index: int = column_index
         self.nature = nature
-        self.temperature_power = self._computer_temperature_power()
         self.alive: bool = True
 
     def update(self, screen: pygame.Surface) -> None:
@@ -45,9 +47,13 @@ class IntenseTemperatureCell(Cell):
     def is_position_nearby_spawn(self):
         return self.rect.y < self.rect.size[1] + MINIMAL_VERTICAL_GAP_BETWEEN_CELLS
 
-    def _computer_temperature_power(self) -> int:
+    def get_temperature_power(self, current_temperature: int) -> int:
         if self.nature is IntenseTemperatureNature.WARM:
             return IntenseTemperatureCell.BASE_TEMPERATURE_POWER
         elif self.nature is IntenseTemperatureNature.COLD:
             return - IntenseTemperatureCell.BASE_TEMPERATURE_POWER
+        elif self.nature is IntenseTemperatureNature.AMPLIFIER:
+            return IntenseTemperatureCell.BASE_TEMPERATURE_POWER \
+                if current_temperature > PERFECT_TEMPERATURE \
+                else - IntenseTemperatureCell.BASE_TEMPERATURE_POWER
         return 0
