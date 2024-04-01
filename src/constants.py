@@ -7,6 +7,8 @@ FRAME_RATE = 60
 MAIN_WIN_WIDTH = 600
 MAIN_WIN_HEIGHT = 800
 
+MAIN_MENU_WIDTH = 400
+
 PLAYER_SIZE = (50, 50)
 PLAYER_INITIAL_POSITION = pygame.Vector2(MAIN_WIN_WIDTH // 2 - PLAYER_SIZE[0] // 2,
                            MAIN_WIN_HEIGHT - PLAYER_SIZE[1] - 20)
@@ -30,3 +32,8 @@ WHITE = pygame.Color("white")
 BLACK = pygame.Color("black")
 LIGHT_YELLOW = pygame.Color("yellow")
 RED = pygame.Color("red")
+
+# Text
+NEW_GAME_TEXT = "New Game"
+EXIT_GAME_TEXT = "Exit Game"
+GAME_OVER_TEXT = "Game Over"

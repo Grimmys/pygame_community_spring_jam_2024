@@ -8,17 +8,18 @@ The pygame events are caught here and delegated to the start screen.
 """
 
 import pygame
+import pygamepopup
 
 from src.constants import GAME_TITLE, MAIN_WIN_WIDTH, MAIN_WIN_HEIGHT, FRAME_RATE
 from src.gui import fonts
-from src.scenes.game import Game
+from src.scenes.main_menu import MainMenu
 from src.tools import show_fps
 
 
 def main_loop(
     screen: pygame.Surface, clock: pygame.time.Clock
 ) -> None:
-    active_scene = Game(screen)
+    active_scene = MainMenu(screen)
     active_scene.run()
 
     keep_playing = True
@@ -37,6 +38,8 @@ def main_loop(
             active_scene.timer_until_next_scene -= 1
             if active_scene.timer_until_next_scene <= 0:
                 active_scene = active_scene.next_scene
+        elif active_scene.should_stop_game:
+            keep_playing = False
         pygame.display.update()
         clock.tick(FRAME_RATE)
 
@@ -45,6 +48,7 @@ if __name__ == "__main__":
     import platform
 
     pygame.init()
+    pygamepopup.init()
 
     fonts.init_fonts()
 

@@ -1,4 +1,4 @@
-from src.constants import MAIN_WIN_HEIGHT, MAIN_WIN_WIDTH, LIGHT_YELLOW
+from src.constants import MAIN_WIN_HEIGHT, MAIN_WIN_WIDTH, LIGHT_YELLOW, GAME_OVER_TEXT
 from src.gui import fonts
 from src.scenes.scene import Scene
 
@@ -10,7 +10,7 @@ class GameOver(Scene):
 
     def draw(self):
         super().draw()
-        game_over_surface = fonts.fonts["GAME_OVER_FONT"].render("GAME OVER", True,
+        game_over_surface = fonts.fonts["GAME_OVER_FONT"].render(GAME_OVER_TEXT, True,
                                                                  LIGHT_YELLOW)
         self.screen.blit(game_over_surface,
                          (MAIN_WIN_WIDTH // 2 - game_over_surface.get_width() // 2,

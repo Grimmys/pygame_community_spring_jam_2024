@@ -9,6 +9,7 @@ class Scene:
         self.screen = screen
         self.next_scene: Optional[Scene] = None
         self.timer_until_next_scene = 0
+        self.should_stop_game = False
 
     def run(self):
         pass
