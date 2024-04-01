@@ -5,7 +5,7 @@ import pygame
 from src.constants import PLAYER_INITIAL_POSITION, PLAYER_SIZE, INTENSE_TEMPERATURE_CELL_SIZE, \
     GENERATION_PROBABILITY, MINIMAL_TIME_BEFORE_CELL_GENERATION, THERMOMETER_POSITION, \
     MAX_TEMPERATURE, MIN_TEMPERATURE, DELAY_BEFORE_GAME_OVER, SCORE_TEXT, LIGHT_YELLOW, \
-    DELAY_BEFORE_SCORE_INCREASE, DEFAULT_SCORE_INCREASE_VALUE
+    DELAY_BEFORE_SCORE_INCREASE, DEFAULT_SCORE_INCREASE_VALUE, PERFECT_TEMPERATURE
 from src.entities.intense_temperature_cell import IntenseTemperatureCell, IntenseTemperatureNature
 from src.entities.player import Player
 from src.gui import fonts
@@ -22,7 +22,7 @@ class Game(Scene):
         self.player: Player = Player(PLAYER_INITIAL_POSITION, PLAYER_SIZE,
                                      "assets/player_cell.png")
         self.intense_temperature_cells: list[IntenseTemperatureCell] = []
-        self.temperature = MAX_TEMPERATURE // 2
+        self.temperature = PERFECT_TEMPERATURE
         self.thermometer = Thermometer(THERMOMETER_POSITION)
         self.score = 0
         self.timer_until_score_increase: int = DELAY_BEFORE_SCORE_INCREASE
@@ -78,9 +78,12 @@ class Game(Scene):
     def _update_score(self):
         if self.timer_until_score_increase <= 0:
             self.timer_until_score_increase = DELAY_BEFORE_SCORE_INCREASE
-            self.score += DEFAULT_SCORE_INCREASE_VALUE
+            self.score += DEFAULT_SCORE_INCREASE_VALUE - self._compute_temperature_shift_penalty()
         else:
             self.timer_until_score_increase -= 1
+
+    def _compute_temperature_shift_penalty(self):
+        return abs(self.temperature - PERFECT_TEMPERATURE) // 5 * 5
 
     def draw(self):
         super().draw()
