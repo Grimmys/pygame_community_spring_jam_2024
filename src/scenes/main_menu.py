@@ -1,5 +1,4 @@
 import pygame
-from pygame import Event
 from pygamepopup.components import InfoBox, Button
 from pygamepopup.menu_manager import MenuManager
 
@@ -32,7 +31,7 @@ class MainMenu(Scene):
         super().draw()
         self.menu_manager.display()
 
-    def process_event(self, event: Event) -> None:
+    def process_event(self, event: pygame.event.Event) -> None:
         if event.type == pygame.MOUSEMOTION:
             self.menu_manager.motion(event.pos)
         elif event.type == pygame.MOUSEBUTTONUP:
