@@ -16,15 +16,15 @@ from src.scenes.game_over import GameOver
 from src.scenes.scene import Scene
 
 DIFFICULTY_LEVELS = [
-    {"generated_cells_range": (1, 2)},
-    {"generated_cells_range": (1, 2, 3)},
-    {"generated_cells_range": (1, 2, 3, 4)},
-    {"generated_cells_range": (2, 3, 4)},
-    {"generated_cells_range": (3, 4)},
-    {"generated_cells_range": (3, 4, 5)},
-    {"generated_cells_range": (4, 5)},
-    {"generated_cells_range": (4, 5, 6)},
-    {"generated_cells_range": (5, 6)},
+    {"generated_cells_range": (1, 2), "amplifier_proportion": 0},
+    {"generated_cells_range": (1, 2, 3), "amplifier_proportion": 0.1},
+    {"generated_cells_range": (1, 2, 3, 4), "amplifier_proportion": 0.2},
+    {"generated_cells_range": (2, 3, 4), "amplifier_proportion": 0.2},
+    {"generated_cells_range": (2, 3, 4), "amplifier_proportion": 0.4},
+    {"generated_cells_range": (3, 4, 5), "amplifier_proportion": 0.5},
+    {"generated_cells_range": (4, 5), "amplifier_proportion": 0.6},
+    {"generated_cells_range": (4, 5, 6), "amplifier_proportion": 0.75},
+    {"generated_cells_range": (5, 6), "amplifier_proportion": 0.75},
 ]
 
 
@@ -43,6 +43,7 @@ class Game(Scene):
         self.difficulty_level = 0
         self.timer_until_difficulty_increase: int = DELAY_BEFORE_DIFFICULTY_INCREASE
         self.number_generated_cells_range = DIFFICULTY_LEVELS[self.difficulty_level]["generated_cells_range"]
+        self.amplifiers_proportion = DIFFICULTY_LEVELS[self.difficulty_level]["amplifier_proportion"]
         self.game_over = False
         self.timer_until_next_scene = DELAY_BEFORE_GAME_OVER
 
@@ -58,7 +59,10 @@ class Game(Scene):
                 break
 
             column_index = random.choice(free_columns)
-            nature = random.choice(list(IntenseTemperatureNature))
+            if random.random() < self.amplifiers_proportion:
+                nature = IntenseTemperatureNature.AMPLIFIER
+            else:
+                nature = random.choice([IntenseTemperatureNature.COLD, IntenseTemperatureNature.WARM])
             self.intense_temperature_cells.append(
                 IntenseTemperatureCell(INTENSE_TEMPERATURE_CELL_SIZE, nature,
                                        column_index))
@@ -146,6 +150,7 @@ class Game(Scene):
         if self.timer_until_difficulty_increase <= 0 and self.difficulty_level < len(DIFFICULTY_LEVELS) - 1:
             self.difficulty_level += 1
             self.number_generated_cells_range = DIFFICULTY_LEVELS[self.difficulty_level]["generated_cells_range"]
+            self.amplifiers_proportion = DIFFICULTY_LEVELS[self.difficulty_level]["amplifier_proportion"]
             self.timer_until_difficulty_increase = DELAY_BEFORE_DIFFICULTY_INCREASE
         else:
             self.timer_until_difficulty_increase -= 1
