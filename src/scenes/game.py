@@ -42,8 +42,10 @@ class Game(Scene):
         self.timer_until_next_cell_generation: int = 0
         self.difficulty_level = 0
         self.timer_until_difficulty_increase: int = DELAY_BEFORE_DIFFICULTY_INCREASE
-        self.number_generated_cells_range = DIFFICULTY_LEVELS[self.difficulty_level]["generated_cells_range"]
-        self.amplifiers_proportion = DIFFICULTY_LEVELS[self.difficulty_level]["amplifier_proportion"]
+        self.number_generated_cells_range = DIFFICULTY_LEVELS[self.difficulty_level][
+            "generated_cells_range"]
+        self.amplifiers_proportion = DIFFICULTY_LEVELS[self.difficulty_level][
+            "amplifier_proportion"]
         self.game_over = False
         self.timer_until_next_scene = DELAY_BEFORE_GAME_OVER
 
@@ -62,7 +64,8 @@ class Game(Scene):
             if random.random() < self.amplifiers_proportion:
                 nature = IntenseTemperatureNature.AMPLIFIER
             else:
-                nature = random.choice([IntenseTemperatureNature.COLD, IntenseTemperatureNature.WARM])
+                nature = random.choice(
+                    [IntenseTemperatureNature.COLD, IntenseTemperatureNature.WARM])
             self.intense_temperature_cells.append(
                 IntenseTemperatureCell(INTENSE_TEMPERATURE_CELL_SIZE, nature,
                                        column_index))
@@ -128,14 +131,16 @@ class Game(Scene):
     def process_event(self, event: pygame.event.Event):
         super().process_event(event)
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_s or event.key == pygame.K_f:
+            if (event.key == pygame.K_s or event.key == pygame.K_f or
+                    event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT):
                 if self.player.in_movement:
                     self.double_movement_key_pressed = True
                 else:
                     self.player.in_movement = True
-                self.player.move_left = event.key == pygame.K_s
+                self.player.move_left = event.key == pygame.K_s or event.key == pygame.K_LEFT
         if event.type == pygame.KEYUP:
-            if event.key == pygame.K_s or event.key == pygame.K_f:
+            if (event.key == pygame.K_s or event.key == pygame.K_f or
+                    event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT):
                 if self.double_movement_key_pressed:
                     self.double_movement_key_pressed = False
                 else:
@@ -147,10 +152,13 @@ class Game(Scene):
             self.next_scene = GameOver(self.screen, self.score, self.difficulty_level)
 
     def _update_difficulty(self):
-        if self.timer_until_difficulty_increase <= 0 and self.difficulty_level < len(DIFFICULTY_LEVELS) - 1:
+        if self.timer_until_difficulty_increase <= 0 and self.difficulty_level < len(
+            DIFFICULTY_LEVELS) - 1:
             self.difficulty_level += 1
-            self.number_generated_cells_range = DIFFICULTY_LEVELS[self.difficulty_level]["generated_cells_range"]
-            self.amplifiers_proportion = DIFFICULTY_LEVELS[self.difficulty_level]["amplifier_proportion"]
+            self.number_generated_cells_range = DIFFICULTY_LEVELS[self.difficulty_level][
+                "generated_cells_range"]
+            self.amplifiers_proportion = DIFFICULTY_LEVELS[self.difficulty_level][
+                "amplifier_proportion"]
             self.timer_until_difficulty_increase = DELAY_BEFORE_DIFFICULTY_INCREASE
         else:
             self.timer_until_difficulty_increase -= 1

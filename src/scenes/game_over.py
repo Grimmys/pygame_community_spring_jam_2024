@@ -40,7 +40,7 @@ class GameOver(Scene):
 
     def process_event(self, event: pygame.event.Event) -> None:
         from src.scenes.main_menu import MainMenu
-        if event.type == pygame.MOUSEBUTTONUP:
+        if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
             self.next_scene = MainMenu(self.screen)
 
     def save_high_score(self):
