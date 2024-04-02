@@ -1,5 +1,4 @@
 import pickle
-from typing import Sequence
 
 import pygame
 

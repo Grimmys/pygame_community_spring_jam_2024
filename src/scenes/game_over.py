@@ -2,8 +2,8 @@ import pickle
 
 import pygame
 
-from src.constants import MAIN_WIN_HEIGHT, MAIN_WIN_WIDTH, LIGHT_YELLOW, GAME_OVER_TEXT, SCORE_TEXT, \
-    DIFFICULTY_LEVEL_TEXT
+from src.constants import (MAIN_WIN_HEIGHT, MAIN_WIN_WIDTH, LIGHT_YELLOW, GAME_OVER_TEXT,
+                           SCORE_TEXT, DIFFICULTY_LEVEL_TEXT)
 from src.gui import fonts
 from src.scenes.scene import Scene
 from src.tools import load_high_scores
@@ -32,10 +32,12 @@ class GameOver(Scene):
                           3 * MAIN_WIN_HEIGHT // 4 - game_over_score.get_height() // 2)
                          )
 
-        game_over_difficulty_level = fonts.fonts["GAME_OVER_STATS_FONT"].render(f"{DIFFICULTY_LEVEL_TEXT}: {self.difficulty_level}", True, LIGHT_YELLOW)
+        game_over_difficulty_level = fonts.fonts["GAME_OVER_STATS_FONT"].render(
+            f"{DIFFICULTY_LEVEL_TEXT}: {self.difficulty_level}", True, LIGHT_YELLOW)
         self.screen.blit(game_over_difficulty_level,
                          (MAIN_WIN_WIDTH // 2 - game_over_difficulty_level.get_width() // 2,
-                          3 * MAIN_WIN_HEIGHT // 4 - game_over_difficulty_level.get_height() // 2 + game_over_score.get_height())
+                          3 * MAIN_WIN_HEIGHT // 4 - game_over_difficulty_level.get_height() // 2
+                          + game_over_score.get_height())
                          )
 
     def process_event(self, event: pygame.event.Event) -> None:

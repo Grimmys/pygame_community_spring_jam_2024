@@ -132,7 +132,7 @@ class Game(Scene):
         super().process_event(event)
         if event.type == pygame.KEYDOWN:
             if (event.key == pygame.K_s or event.key == pygame.K_f or
-                    event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT):
+                event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT):
                 if self.player.in_movement:
                     self.double_movement_key_pressed = True
                 else:
@@ -140,7 +140,7 @@ class Game(Scene):
                 self.player.move_left = event.key == pygame.K_s or event.key == pygame.K_LEFT
         if event.type == pygame.KEYUP:
             if (event.key == pygame.K_s or event.key == pygame.K_f or
-                    event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT):
+                event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT):
                 if self.double_movement_key_pressed:
                     self.double_movement_key_pressed = False
                 else:
@@ -152,8 +152,8 @@ class Game(Scene):
             self.next_scene = GameOver(self.screen, self.score, self.difficulty_level)
 
     def _update_difficulty(self):
-        if self.timer_until_difficulty_increase <= 0 and self.difficulty_level < len(
-            DIFFICULTY_LEVELS) - 1:
+        if (self.timer_until_difficulty_increase <= 0 and
+                self.difficulty_level < len(DIFFICULTY_LEVELS) - 1):
             self.difficulty_level += 1
             self.number_generated_cells_range = DIFFICULTY_LEVELS[self.difficulty_level][
                 "generated_cells_range"]

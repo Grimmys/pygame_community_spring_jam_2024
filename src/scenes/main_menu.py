@@ -1,6 +1,3 @@
-import pickle
-from typing import Sequence
-
 import pygame
 from pygamepopup.components import InfoBox, Button, TextElement
 from pygamepopup.menu_manager import MenuManager
@@ -55,13 +52,16 @@ class MainMenu(Scene):
             HIGH_SCORE_TEXT,
             [
                 [
-                    TextElement(text=f"1 — {high_scores[0]}", text_color=pygame.Color("GOLD"), font=fonts.fonts["HIGH_SCORE_FONT"]),
+                    TextElement(text=f"1 — {high_scores[0]}", text_color=pygame.Color("GOLD"),
+                                font=fonts.fonts["HIGH_SCORE_FONT"]),
                 ],
                 [
-                    TextElement(text=f"2 — {high_scores[1]}", text_color=pygame.Color("GOLD"), font=fonts.fonts["HIGH_SCORE_FONT"])
+                    TextElement(text=f"2 — {high_scores[1]}", text_color=pygame.Color("GOLD"),
+                                font=fonts.fonts["HIGH_SCORE_FONT"])
                 ],
                 [
-                    TextElement(text=f"3 — {high_scores[2]}", text_color=pygame.Color("GOLD"), font=fonts.fonts["HIGH_SCORE_FONT"]),
+                    TextElement(text=f"3 — {high_scores[2]}", text_color=pygame.Color("GOLD"),
+                                font=fonts.fonts["HIGH_SCORE_FONT"]),
                 ],
             ],
             width=HIGH_SCORE_MENU_WIDTH,
@@ -70,4 +70,3 @@ class MainMenu(Scene):
 
     def exit_game(self):
         self.should_stop_game = True
-
