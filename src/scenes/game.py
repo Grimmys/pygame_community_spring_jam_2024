@@ -140,7 +140,7 @@ class Game(Scene):
     def _check_game_over(self):
         self.game_over = self.temperature not in range(MIN_TEMPERATURE, MAX_TEMPERATURE)
         if self.game_over:
-            self.next_scene = GameOver(self.screen)
+            self.next_scene = GameOver(self.screen, self.score, self.difficulty_level)
 
     def _update_difficulty(self):
         if self.timer_until_difficulty_increase <= 0 and self.difficulty_level < len(DIFFICULTY_LEVELS) - 1:
