@@ -1,9 +1,12 @@
+import pickle
+
 import pygame
 
 from src.constants import MAIN_WIN_HEIGHT, MAIN_WIN_WIDTH, LIGHT_YELLOW, GAME_OVER_TEXT, SCORE_TEXT, \
     DIFFICULTY_LEVEL_TEXT
 from src.gui import fonts
 from src.scenes.scene import Scene
+from src.tools import load_high_scores
 
 
 class GameOver(Scene):
@@ -12,6 +15,7 @@ class GameOver(Scene):
         super().__init__(screen)
         self.score = score
         self.difficulty_level = difficulty_level
+        self.save_high_score()
 
     def draw(self):
         super().draw()
@@ -38,3 +42,11 @@ class GameOver(Scene):
         from src.scenes.main_menu import MainMenu
         if event.type == pygame.MOUSEBUTTONUP:
             self.next_scene = MainMenu(self.screen)
+
+    def save_high_score(self):
+        high_scores = load_high_scores()
+        high_scores.append(self.score)
+        high_scores.sort(reverse=True)
+        high_scores.pop()
+        with open("high_scores.pkl", "wb") as file:
+            pickle.dump(high_scores, file)

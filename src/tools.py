@@ -1,3 +1,6 @@
+import pickle
+from typing import Sequence
+
 import pygame
 
 from src.constants import LIGHT_YELLOW
@@ -16,3 +19,11 @@ def show_fps(
     """
     fps_text = font.render(f"FPS: {inner_clock.get_fps():.0f}", True, LIGHT_YELLOW)
     surface.blit(fps_text, (2, 2))
+
+
+def load_high_scores() -> list[int]:
+    try:
+        with open("high_scores.pkl", "rb") as file:
+            return pickle.load(file)
+    except FileNotFoundError:
+        return [0, 0, 0]

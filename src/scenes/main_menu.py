@@ -1,10 +1,16 @@
+import pickle
+from typing import Sequence
+
 import pygame
-from pygamepopup.components import InfoBox, Button
+from pygamepopup.components import InfoBox, Button, TextElement
 from pygamepopup.menu_manager import MenuManager
 
-from src.constants import NEW_GAME_TEXT, GAME_TITLE, EXIT_GAME_TEXT, MAIN_MENU_WIDTH
+from src.constants import NEW_GAME_TEXT, GAME_TITLE, EXIT_GAME_TEXT, MAIN_MENU_WIDTH, \
+    HIGH_SCORE_TEXT, HIGH_SCORE_MENU_WIDTH
+from src.gui import fonts
 from src.scenes.game import Game
 from src.scenes.scene import Scene
+from src.tools import load_high_scores
 
 
 class MainMenu(Scene):
@@ -18,6 +24,9 @@ class MainMenu(Scene):
             [
                 [
                     Button(title=NEW_GAME_TEXT, callback=self.new_game),
+                ],
+                [
+                    Button(title=HIGH_SCORE_TEXT, callback=self.see_high_score)
                 ],
                 [
                     Button(title=EXIT_GAME_TEXT, callback=self.exit_game),
@@ -40,5 +49,25 @@ class MainMenu(Scene):
     def new_game(self):
         self.next_scene = Game(self.screen)
 
+    def see_high_score(self):
+        high_scores = load_high_scores()
+        self.menu_manager.open_menu(InfoBox(
+            HIGH_SCORE_TEXT,
+            [
+                [
+                    TextElement(text=f"1 — {high_scores[0]}", text_color=pygame.Color("GOLD"), font=fonts.fonts["HIGH_SCORE_FONT"]),
+                ],
+                [
+                    TextElement(text=f"2 — {high_scores[1]}", text_color=pygame.Color("GOLD"), font=fonts.fonts["HIGH_SCORE_FONT"])
+                ],
+                [
+                    TextElement(text=f"3 — {high_scores[2]}", text_color=pygame.Color("GOLD"), font=fonts.fonts["HIGH_SCORE_FONT"]),
+                ],
+            ],
+            width=HIGH_SCORE_MENU_WIDTH,
+            has_close_button=True,
+        ))
+
     def exit_game(self):
         self.should_stop_game = True
+

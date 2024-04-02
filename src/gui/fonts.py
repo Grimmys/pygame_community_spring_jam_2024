@@ -9,7 +9,8 @@ _fonts_description: dict[str, dict[str, str | int]] = {
     "FPS_FONT": {"default": True, "size": 20},
     "GAME_OVER_FONT": {"default": True, "size": 64},
     "GAME_OVER_STATS_FONT": {"default": True, "size": 40},
-    "SCORE_FONT": {"default": True, "size": 32}
+    "SCORE_FONT": {"default": True, "size": 32},
+    "HIGH_SCORE_FONT": {"default": True, "size": 32}
 }
 
 fonts: dict[str, pygame.font.Font] = {}
