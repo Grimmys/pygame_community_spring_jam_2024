@@ -1,5 +1,6 @@
 import pygame
 
+from src.constants import RED
 from src.entities.cell import Cell
 from src.gui.position import Position
 
@@ -20,3 +21,6 @@ class Player(Cell):
             else:
                 self.velocity.x += Cell.DEFAULT_CELL_VELOCITY
         super().update(screen)
+
+    def display(self, screen: pygame.Surface) -> None:
+        super().display(screen)

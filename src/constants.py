@@ -9,6 +9,7 @@ MAIN_WIN_HEIGHT = 800
 
 MAIN_MENU_WIDTH = 400
 HIGH_SCORE_MENU_WIDTH = 500
+HELP_TEXT_MENU_WIDTH = 500
 
 GAME_AREA_HORIZONTAL_START = 100
 GAME_AREA_HORIZONTAL_END = 500
@@ -42,11 +43,12 @@ WHITE = pygame.Color("white")
 BLACK = pygame.Color("black")
 LIGHT_YELLOW = pygame.Color("yellow")
 RED = pygame.Color("#d80d0d")
-CRYSTAL_WHITE = pygame.Color("#d0f1f4")
+CRYSTAL_WHITE = pygame.Color("#a1dfe4")
 BLUE = pygame.Color("#164bea")
 
 # Text
 NEW_GAME_TEXT = "New Game"
+HELP_TEXT = "Help"
 HIGH_SCORE_TEXT = "High Score"
 EXIT_GAME_TEXT = "Exit Game"
 GAME_OVER_TEXT = "Game Over"
