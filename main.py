@@ -12,7 +12,7 @@ from os.path import abspath
 import pygame
 import pygamepopup
 
-from src.constants import GAME_TITLE, MAIN_WIN_WIDTH, MAIN_WIN_HEIGHT, FRAME_RATE
+from src.constants import GAME_TITLE, MAIN_WIN_WIDTH, MAIN_WIN_HEIGHT, FRAME_RATE, WHITE, BLACK
 from src.gui import fonts
 from src.scenes.main_menu import MainMenu
 from src.tools import show_fps
@@ -61,6 +61,7 @@ if __name__ == "__main__":
                                                     abspath(Path("assets", "temperature_button_hover.png")))
     pygamepopup.configuration.set_info_box_title_font(fonts.fonts["TITLE_FONT"])
     pygamepopup.configuration.set_button_title_font(fonts.fonts["BUTTON_FONT"])
+    pygamepopup.configuration.set_button_text_color(WHITE, BLACK)
 
     pygame.display.set_caption(GAME_TITLE)
     main_screen = pygame.display.set_mode((MAIN_WIN_WIDTH, MAIN_WIN_HEIGHT))
