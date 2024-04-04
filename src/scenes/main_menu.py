@@ -7,7 +7,7 @@ from pygamepopup.menu_manager import MenuManager
 
 from src.constants import NEW_GAME_TEXT, GAME_TITLE, EXIT_GAME_TEXT, MAIN_MENU_WIDTH, \
     HIGH_SCORE_TEXT, HIGH_SCORE_MENU_WIDTH, RED, CRYSTAL_WHITE, BLUE, HELP_TEXT, \
-    HELP_MENU_WIDTH, GLOSSARY_TEXT, GLOSSARY_MENU_WIDTH
+    HELP_MENU_WIDTH, GLOSSARY_TEXT, GLOSSARY_MENU_WIDTH, CONTROLS_TEXT, CONTROLS_MENU_WIDTH
 from src.gui import fonts
 from src.scenes.game import Game
 from src.scenes.scene import Scene
@@ -91,8 +91,9 @@ class MainMenu(Scene):
                     TextElement(text="So make sure to avoid all these cells that will keep swarming you.")
                 ],
                 [
-                    Button(title=GLOSSARY_TEXT, callback=self.see_glossary, margin=(10, 0, 0, 0))
-                ]
+                    Button(title=GLOSSARY_TEXT, callback=self.see_glossary, margin=(10, 0, 0, 0)),
+                    Button(title=CONTROLS_TEXT, callback=self.see_controls, margin=(10, 0, 0, 0))
+                ],
             ],
             width=HELP_MENU_WIDTH,
             has_close_button=True,
@@ -120,6 +121,25 @@ class MainMenu(Scene):
                 ],
             ],
             width=GLOSSARY_MENU_WIDTH,
+            has_close_button=True,
+        ))
+
+    def see_controls(self):
+        self.menu_manager.open_menu(InfoBox(
+            CONTROLS_TEXT,
+            [
+                [
+                    TextElement(text="Move left:"),
+                    TextElement(text="S or left arrow",
+                                column_span=2)
+                ],
+                [
+                    TextElement(text="Move right:"),
+                    TextElement(text="F or right arrow",
+                                column_span=2)
+                ],
+            ],
+            width=CONTROLS_MENU_WIDTH,
             has_close_button=True,
         ))
 
