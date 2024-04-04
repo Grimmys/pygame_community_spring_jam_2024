@@ -3,7 +3,7 @@ from pygamepopup.components import InfoBox, Button, TextElement
 from pygamepopup.menu_manager import MenuManager
 
 from src.constants import NEW_GAME_TEXT, GAME_TITLE, EXIT_GAME_TEXT, MAIN_MENU_WIDTH, \
-    HIGH_SCORE_TEXT, HIGH_SCORE_MENU_WIDTH
+    HIGH_SCORE_TEXT, HIGH_SCORE_MENU_WIDTH, RED, CRYSTAL_WHITE, BLUE, BLACK
 from src.gui import fonts
 from src.scenes.game import Game
 from src.scenes.scene import Scene
@@ -20,13 +20,13 @@ class MainMenu(Scene):
             GAME_TITLE,
             [
                 [
-                    Button(title=NEW_GAME_TEXT, callback=self.new_game),
+                    Button(title=NEW_GAME_TEXT, callback=self.new_game, text_hover_color=BLACK),
                 ],
                 [
-                    Button(title=HIGH_SCORE_TEXT, callback=self.see_high_score)
+                    Button(title=HIGH_SCORE_TEXT, callback=self.see_high_score, text_hover_color=BLACK)
                 ],
                 [
-                    Button(title=EXIT_GAME_TEXT, callback=self.exit_game),
+                    Button(title=EXIT_GAME_TEXT, callback=self.exit_game, text_hover_color=BLACK),
                 ],
             ],
             width=MAIN_MENU_WIDTH,
@@ -52,15 +52,15 @@ class MainMenu(Scene):
             HIGH_SCORE_TEXT,
             [
                 [
-                    TextElement(text=f"1 — {high_scores[0]}", text_color=pygame.Color("GOLD"),
+                    TextElement(text=f"1 — {high_scores[0]}", text_color=RED,
                                 font=fonts.fonts["HIGH_SCORE_FONT"]),
                 ],
                 [
-                    TextElement(text=f"2 — {high_scores[1]}", text_color=pygame.Color("GOLD"),
+                    TextElement(text=f"2 — {high_scores[1]}", text_color=CRYSTAL_WHITE,
                                 font=fonts.fonts["HIGH_SCORE_FONT"])
                 ],
                 [
-                    TextElement(text=f"3 — {high_scores[2]}", text_color=pygame.Color("GOLD"),
+                    TextElement(text=f"3 — {high_scores[2]}", text_color=BLUE,
                                 font=fonts.fonts["HIGH_SCORE_FONT"]),
                 ],
             ],

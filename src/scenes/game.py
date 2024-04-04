@@ -132,7 +132,7 @@ class Game(Scene):
         super().process_event(event)
         if event.type == pygame.KEYDOWN:
             if (event.key == pygame.K_s or event.key == pygame.K_f or
-                event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT):
+                    event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT):
                 if self.player.in_movement:
                     self.double_movement_key_pressed = True
                 else:
@@ -140,7 +140,7 @@ class Game(Scene):
                 self.player.move_left = event.key == pygame.K_s or event.key == pygame.K_LEFT
         if event.type == pygame.KEYUP:
             if (event.key == pygame.K_s or event.key == pygame.K_f or
-                event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT):
+                    event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT):
                 if self.double_movement_key_pressed:
                     self.double_movement_key_pressed = False
                 else:

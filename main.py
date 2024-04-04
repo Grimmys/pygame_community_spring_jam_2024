@@ -6,6 +6,8 @@ Initiate pygame, load game generic data & fonts, initiate pygame window
 and let the main loop running.
 The pygame events are caught here and delegated to the start screen.
 """
+from pathlib import Path
+from os.path import abspath
 
 import pygame
 import pygamepopup
@@ -49,6 +51,12 @@ if __name__ == "__main__":
 
     pygame.init()
     pygamepopup.init()
+
+    pygamepopup.configuration.set_info_box_background(
+        abspath(Path("assets", "temperature_menu.png"))
+    )
+    pygamepopup.configuration.set_button_background(abspath(Path("assets", "temperature_menu.png")),
+                                                    abspath(Path("assets", "temperature_menu_hover.png")))
 
     fonts.init_fonts()
 

@@ -41,7 +41,9 @@ DELAY_BEFORE_GAME_OVER = FRAME_RATE * 2
 WHITE = pygame.Color("white")
 BLACK = pygame.Color("black")
 LIGHT_YELLOW = pygame.Color("yellow")
-RED = pygame.Color("red")
+RED = pygame.Color("#d80d0d")
+CRYSTAL_WHITE = pygame.Color("#d0f1f4")
+BLUE = pygame.Color("#164bea")
 
 # Text
 NEW_GAME_TEXT = "New Game"
