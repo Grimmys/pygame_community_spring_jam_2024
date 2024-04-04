@@ -19,7 +19,7 @@ from src.tools import show_fps
 
 
 def main_loop(
-    screen: pygame.Surface, clock: pygame.time.Clock
+        screen: pygame.Surface, clock: pygame.time.Clock
 ) -> None:
     active_scene = MainMenu(screen)
     active_scene.run()
@@ -52,13 +52,15 @@ if __name__ == "__main__":
     pygame.init()
     pygamepopup.init()
 
+    fonts.init_fonts()
+
     pygamepopup.configuration.set_info_box_background(
         abspath(Path("assets", "temperature_menu.png"))
     )
-    pygamepopup.configuration.set_button_background(abspath(Path("assets", "temperature_menu.png")),
-                                                    abspath(Path("assets", "temperature_menu_hover.png")))
-
-    fonts.init_fonts()
+    pygamepopup.configuration.set_button_background(abspath(Path("assets", "temperature_button.png")),
+                                                    abspath(Path("assets", "temperature_button_hover.png")))
+    pygamepopup.configuration.set_info_box_title_font(fonts.fonts["TITLE_FONT"])
+    pygamepopup.configuration.set_button_title_font(fonts.fonts["BUTTON_FONT"])
 
     pygame.display.set_caption(GAME_TITLE)
     main_screen = pygame.display.set_mode((MAIN_WIN_WIDTH, MAIN_WIN_HEIGHT))
