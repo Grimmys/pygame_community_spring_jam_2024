@@ -34,7 +34,7 @@ def main_loop(
             active_scene.process_event(event)
         screen.fill(pygame.Color("BLACK"))
         active_scene.draw()
-        show_fps(screen, clock, fonts.fonts["FPS_FONT"])
+        # show_fps(screen, clock, fonts.fonts["FPS_FONT"])
         active_scene.update()
         if active_scene.next_scene is not None:
             active_scene.timer_until_next_scene -= 1
@@ -48,6 +48,9 @@ def main_loop(
 
 if __name__ == "__main__":
     import platform
+    import os
+
+    os.environ['SDL_VIDEO_WINDOW_POS'] = "100, 100"
 
     pygame.init()
     pygamepopup.init()
